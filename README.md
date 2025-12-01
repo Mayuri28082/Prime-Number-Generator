@@ -28,18 +28,18 @@ test_app/
 
 ## 1. Prerequisites
 Install:
-Docker Desktop
-Python 3.10+
-VS Code / Pycharm
+1. Docker Desktop
+2. Python 3.10+
+3. VS Code / Pycharm
 
 ## 2. How to Build & Run the Project (Using Docker)
 Build & Start All Services  -> docker compose up --build
 This starts: Service	URL
-FastAPI	-> http://localhost:8000
-RabbitMQ UI -> http://localhost:15672
-Grafana -> http://localhost:3000
-Prometheus -> http://localhost:9090
-Flower (Celery UI) ->	http://localhost:5555
+1. FastAPI	-> http://localhost:8000
+2. RabbitMQ UI -> http://localhost:15672
+3. Grafana -> http://localhost:3000
+4. Prometheus -> http://localhost:9090
+5. Flower (Celery UI) ->	http://localhost:5555
 
 ## 3. API Endpoints
 1. Generate Prime Numbers (Sync) - Works immediately inside FastAPI.
@@ -107,8 +107,8 @@ docker compose down
 For a clean reset -> docker compose down -v
 
 ## 8. Verify Celery Worker Status
-docker exec -it celery-worker sh
-celery -A tasks inspect stats
+1. docker exec -it celery-worker sh
+2. celery -A tasks inspect stats
 
 ## 9. Features Implemented
 1. Sync + Async task execution
