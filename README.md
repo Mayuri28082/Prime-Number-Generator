@@ -116,7 +116,5 @@ celery -A tasks inspect stats
 3. Reliable background processing
 4. Real-time monitoring: Prometheus, Grafana, Flower
 5. Automatic metrics exposure
-
-Load testing with Locust
-
-Fully containerized with Docker Compose
+6. Load testing with Locust
+7. Fully containerized with Docker Compose
