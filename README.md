@@ -103,8 +103,8 @@ Spawn rate: e.g., 5
 /primes/async
 
 ## 7. Stopping Containers
-docker compose down
-For a clean reset -> docker compose down -v
+1. docker compose down
+2. For a clean reset -> docker compose down -v
 
 ## 8. Verify Celery Worker Status
 1. docker exec -it celery-worker sh
