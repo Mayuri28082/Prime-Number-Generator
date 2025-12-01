@@ -1,0 +1,93 @@
+# version: '3.8'
+
+services:
+
+  web:
+    build: .
+    container_name: fastapi-app
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - appnet
+
+  worker:
+    build: .
+    container_name: celery-worker
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: celery -A tasks.celery_app worker --loglevel=info
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - appnet
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - appnet
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - appnet
+
+  flower:
+    image: mher/flower
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+    networks:
+      - appnet
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - appnet
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - appnet
+
+  victoriametrics:
+    image: victoriametrics/victoria-metrics
+    container_name: victoriametrics
+    ports:
+      - "8428:8428"
+    command:
+      - "--selfScrapeInterval=0"
+    volumes:
+      - ./victoriametrics-data:/victoria-metrics-data
+    networks:
+      - appnet
+  
+
+
+
+networks:
+  appnet:
+    driver: bridge
+
+

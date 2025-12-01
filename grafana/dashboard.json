@@ -1,0 +1,78 @@
+{
+    "id": null,
+    "uid": "fastapi-prime-dashboard",
+    "title": "FastAPI Prime Generator Metrics",
+    "schemaVersion": 39,
+    "version": 1,
+    "refresh": "5s",
+    "time": {
+        "from": "now-15m",
+        "to": "now"
+    },
+    "panels": [
+        {
+            "type": "stat",
+            "title": "Total API Requests",
+            "gridPos": {
+                "x": 0,
+                "y": 0,
+                "w": 6,
+                "h": 4
+            },
+            "targets": [
+                {
+                    "expr": "sum(http_requests_total)",
+                    "legendFormat": "Total"
+                }
+            ]
+        },
+        {
+            "type": "graph",
+            "title": "Requests Per Second (RPS)",
+            "gridPos": {
+                "x": 6,
+                "y": 0,
+                "w": 12,
+                "h": 6
+            },
+            "targets": [
+                {
+                    "expr": "rate(http_requests_total[1m])",
+                    "legendFormat": "RPS"
+                }
+            ]
+        },
+        {
+            "type": "graph",
+            "title": "Avg Request Latency (Seconds)",
+            "gridPos": {
+                "x": 0,
+                "y": 6,
+                "w": 18,
+                "h": 6
+            },
+            "targets": [
+                {
+                    "expr": "rate(http_request_latency_seconds_sum[1m]) / rate(http_request_latency_seconds_count[1m])",
+                    "legendFormat": "Avg Latency"
+                }
+            ]
+        },
+        {
+            "type": "graph",
+            "title": "Requests by Status Code",
+            "gridPos": {
+                "x": 0,
+                "y": 12,
+                "w": 18,
+                "h": 6
+            },
+            "targets": [
+                {
+                    "expr": "sum by (status)(http_requests_total)",
+                    "legendFormat": "Status {{status}}"
+                }
+            ]
+        }
+    ]
+}
