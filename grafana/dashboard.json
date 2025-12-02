@@ -1,76 +1,56 @@
 {
-    "id": null,
-    "uid": "fastapi-prime-dashboard",
-    "title": "FastAPI Prime Generator Metrics",
-    "schemaVersion": 39,
-    "version": 1,
-    "refresh": "5s",
-    "time": {
-        "from": "now-15m",
-        "to": "now"
-    },
     "panels": [
         {
             "type": "stat",
-            "title": "Total API Requests",
-            "gridPos": {
-                "x": 0,
-                "y": 0,
-                "w": 6,
-                "h": 4
-            },
+            "title": "Total HTTP Requests",
             "targets": [
                 {
-                    "expr": "sum(http_requests_total)",
-                    "legendFormat": "Total"
+                    "expr": "http_requests_total"
                 }
             ]
         },
         {
             "type": "graph",
-            "title": "Requests Per Second (RPS)",
-            "gridPos": {
-                "x": 6,
-                "y": 0,
-                "w": 12,
-                "h": 6
-            },
+            "title": "Celery Task Count",
             "targets": [
                 {
-                    "expr": "rate(http_requests_total[1m])",
-                    "legendFormat": "RPS"
+                    "expr": "celery_tasks_total"
                 }
             ]
         },
         {
             "type": "graph",
-            "title": "Avg Request Latency (Seconds)",
-            "gridPos": {
-                "x": 0,
-                "y": 6,
-                "w": 18,
-                "h": 6
-            },
+            "title": "Celery Task Duration",
             "targets": [
                 {
-                    "expr": "rate(http_request_latency_seconds_sum[1m]) / rate(http_request_latency_seconds_count[1m])",
-                    "legendFormat": "Avg Latency"
+                    "expr": "celery_task_duration_seconds_sum / celery_task_duration_seconds_count or vector(0)"
                 }
             ]
         },
         {
             "type": "graph",
-            "title": "Requests by Status Code",
-            "gridPos": {
-                "x": 0,
-                "y": 12,
-                "w": 18,
-                "h": 6
-            },
+            "title": "RabbitMQ Messages Ready",
             "targets": [
                 {
-                    "expr": "sum by (status)(http_requests_total)",
-                    "legendFormat": "Status {{status}}"
+                    "expr": "rabbitmq_queue_messages_ready{queue=\"celery\"}"
+                }
+            ]
+        },
+        {
+            "type": "graph",
+            "title": "CPU Usage",
+            "targets": [
+                {
+                    "expr": "rate(node_cpu_seconds_total[5m])"
+                }
+            ]
+        },
+        {
+            "type": "graph",
+            "title": "Memory Available",
+            "targets": [
+                {
+                    "expr": "node_memory_MemAvailable_bytes"
                 }
             ]
         }

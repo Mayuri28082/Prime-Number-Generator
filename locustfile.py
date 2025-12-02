@@ -9,11 +9,11 @@ class PrimeUser(HttpUser):
 
     @task
     def medium_prime(self):
-        self.client.get("/primes?n=50")
+        self.client.get("/primes?n=100")
 
     @task
     def async_prime(self):
-        res = self.client.post("/primes/async?n=10")
+        res = self.client.post("/primes/async?n=200")
         if res.status_code == 200:
             task_id = res.json().get("task_id")
             self.client.get(f"/tasks/{task_id}")
